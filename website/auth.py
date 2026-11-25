@@ -28,7 +28,7 @@ def is_safe_next_url(target):
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.notes'))
 
     if request.method == 'POST':
         email = (request.form.get('email') or '').strip().lower()
@@ -42,7 +42,7 @@ def login():
             login_user(user, remember=remember)
             flash('Logged in successfully!', category='success')
             next_url = request.args.get('next')
-            return redirect(next_url if is_safe_next_url(next_url) else url_for('views.home'))
+            return redirect(next_url if is_safe_next_url(next_url) else url_for('views.notes'))
 
         # Same message for both cases so nobody can find out which emails are registered.
         flash('Invalid email or password.', category='error')
@@ -55,13 +55,13 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out.', category='success')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('views.home'))
 
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.notes'))
 
     if request.method == 'POST':
         email = (request.form.get('email') or '').strip().lower()
@@ -92,6 +92,6 @@ def signup():
 
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('views.notes'))
 
     return render_template('sign_up.html')

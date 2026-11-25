@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
+{% block content %}
+<section class="hero">
+    <h1>Your notes, safe and simple.</h1>
+    <p class="hero-text">
+        Write down ideas, reminders and to-dos in one private place.
+        Create an account and your notes are only ever visible to you.
+    </p>
+    <div class="hero-actions">
+        <a class="btn btn-inline" href="{{ url_for('auth.signup') }}">Get Started</a>
+        <a class="btn btn-inline btn-outline" href="{{ url_for('auth.login') }}">Login</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <h3>Private</h3>
+        <p>Secure login with hashed passwords. Only you can see your notes.</p>
+    </div>
+    <div class="feature">
+        <h3>Simple</h3>
+        <p>Add a note in seconds and delete it when you are done.</p>
+    </div>
+    <div class="feature">
+        <h3>Anywhere</h3>
+        <p>Works on your phone, tablet and computer.</p>
+    </div>
+</section>
+{% endblock %}

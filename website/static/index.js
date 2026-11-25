@@ -17,7 +17,7 @@ function deleteNote(noteId) {
   })
     .then((res) => {
       if (!res.ok) throw new Error("Request failed");
-      window.location.href = "/";
+      window.location.href = "/notes";
     })
     .catch(() => {
       alert("Could not delete the note. Please refresh the page and try again.");

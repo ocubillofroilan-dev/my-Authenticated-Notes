@@ -36,12 +36,20 @@ def create_app():
     os.makedirs(app.instance_path, exist_ok=True)
 
     app.config['SECRET_KEY'] = load_secret_key(app)
-    # A relative sqlite path is created inside the "instance" folder.
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    # Uses DATABASE_URL (e.g. a Postgres database on Render) if set,
+    # otherwise a local SQLite file inside the "instance" folder.
+    database_url = os.environ.get('DATABASE_URL', f'sqlite:///{DB_NAME}')
+    if database_url.startswith('postgres://'):
+        database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['REMEMBER_COOKIE_HTTPONLY'] = True
     app.config['REMEMBER_COOKIE_SAMESITE'] = 'Lax'
+    # Render sets the RENDER variable; there we serve over HTTPS, so cookies can be secure.
+    on_render = bool(os.environ.get('RENDER'))
+    app.config['SESSION_COOKIE_SECURE'] = on_render
+    app.config['REMEMBER_COOKIE_SECURE'] = on_render
 
     db.init_app(app)
     csrf.init_app(app)
@@ -71,7 +79,7 @@ def create_app():
         if request.is_json:
             return jsonify(error='Your session expired. Please refresh the page.'), 400
         flash('Your session expired. Please try again.', category='error')
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.notes'))
 
     with app.app_context():
         db.create_all()  # only creates tables that don't exist yet

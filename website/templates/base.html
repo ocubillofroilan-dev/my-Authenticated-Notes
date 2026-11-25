@@ -12,12 +12,13 @@
         <a class="navbrand" href="{{ url_for('views.home') }}">My Notes</a>
         <div class="navdiv">
             {% if current_user.is_authenticated %}
-            <a class="navitem" id="home" href="{{ url_for('views.home') }}">Home</a>
+            <a class="navitem" id="notes-link" href="{{ url_for('views.notes') }}">My Notes</a>
             <form class="logout-form" method="POST" action="{{ url_for('auth.logout') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <button type="submit" class="navitem navbutton" id="logout">Logout</button>
             </form>
             {% else %}
+            <a class="navitem" id="home-link" href="{{ url_for('views.home') }}">Home</a>
             <a class="navitem" id="login" href="{{ url_for('auth.login') }}">Login</a>
             <a class="navitem" id="signup" href="{{ url_for('auth.signup') }}">Sign Up</a>
             {% endif %}

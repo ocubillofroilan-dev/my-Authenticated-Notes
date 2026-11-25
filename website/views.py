@@ -9,9 +9,17 @@ views = Blueprint('views', __name__)
 MAX_NOTE_LENGTH = 10000
 
 
-@views.route('/', methods=['GET', 'POST'])
-@login_required
+@views.route('/')
 def home():
+    """Public landing page. Logged-in users go straight to their notes."""
+    if current_user.is_authenticated:
+        return redirect(url_for('views.notes'))
+    return render_template('landing.html')
+
+
+@views.route('/notes', methods=['GET', 'POST'])
+@login_required
+def notes():
     if request.method == 'POST':
         note = (request.form.get('note') or '').strip()
 
@@ -25,9 +33,9 @@ def home():
             flash('Note added!', category='success')
 
         # Redirect so refreshing the page doesn't submit the form again.
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.notes'))
 
-    return render_template('home.html')
+    return render_template('notes.html')
 
 
 @views.route('/delete-note', methods=['POST'])
