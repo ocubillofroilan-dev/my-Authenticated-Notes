@@ -1,32 +1,37 @@
-{% extends "base.html" %} {% block title %}Login{% endblock %}{% block content%}
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
 <form method="POST">
-    <h3 align="center">Login</h3>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <h3 class="center">Login</h3>
     <div>
         <label for="email">Email Address</label>
-        <input 
-            type="email" 
-            class="form" 
-            id="email" 
-            name="email" 
-            placeholder="Enter Email Address" 
+        <input
+            type="email"
+            class="form"
+            id="email"
+            name="email"
+            placeholder="Enter Email Address"
+            autocomplete="email"
+            required
         />
     </div>
     <div>
         <label for="password">Password</label>
-        <input 
-            type="password" 
-            class="form" 
-            id="password" 
-            name="password" 
-            placeholder="Enter Password" 
+        <input
+            type="password"
+            class="form"
+            id="password"
+            name="password"
+            placeholder="Enter Password"
+            autocomplete="current-password"
+            required
         />
     </div>
-    <br />
+    <label class="checkbox-label" for="remember">
+        <input type="checkbox" id="remember" name="remember" /> Remember me
+    </label>
     <button type="submit" class="btn">Login</button>
-
-
-    
+    <p class="form-footer">No account yet? <a href="{{ url_for('auth.signup') }}">Sign up</a></p>
 </form>
-
-
 {% endblock %}

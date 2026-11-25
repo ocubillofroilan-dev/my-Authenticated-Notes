@@ -1,20 +1,32 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-<h1 align="center">Notes</h1>
-<ul class="list-group list-group-flush" id="notes">
-  {% for note in user.notes %}
-  <li class="list-group-item">
-    {{ note.data }}
-    <button type="button" class="close" value="{{ note.id }}" onClick="deleteNote(this.value)">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </li>
-  {% endfor %}
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1 class="page-title">{{ current_user.fullName }}'s Notes</h1>
+
+{% if current_user.notes %}
+<ul class="list-group" id="notes">
+    {% for note in current_user.notes %}
+    <li class="list-group-item">
+        <div class="note-body">
+            <span class="note-text">{{ note.data }}</span>
+            {% if note.date %}
+            <time class="note-date" data-utc="{{ note.date.strftime('%Y-%m-%dT%H:%M:%S') }}Z">{{ note.date.strftime('%b %d, %Y') }}</time>
+            {% endif %}
+        </div>
+        <button type="button" class="close" data-note-id="{{ note.id }}" aria-label="Delete note">&times;</button>
+    </li>
+    {% endfor %}
 </ul>
+{% else %}
+<p class="empty-state">No notes yet. Add your first one below.</p>
+{% endif %}
+
 <form method="POST">
-  <textarea name="note" id="note" class="form-control"></textarea>
-  <br />
-  <div align="center">
-    <button type="submit" class="btn btn-primary">Add Note</button>
-  </div>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <label for="note">New note</label>
+    <textarea name="note" id="note" class="form-control" maxlength="10000" required></textarea>
+    <div class="center">
+        <button type="submit" class="btn btn-primary">Add Note</button>
+    </div>
 </form>
 {% endblock %}

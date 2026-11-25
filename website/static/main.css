@@ -11,19 +11,43 @@ body {
     line-height: 1.6;
 }
 
+a {
+    color: #3498db;
+}
+
 .container {
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
 }
 
+.flash-area {
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.center {
+    text-align: center;
+}
+
+/* ---------- Navbar ---------- */
 .navbar {
     background-color: #1a1a24;
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbrand {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 .navdiv {
@@ -43,34 +67,60 @@ body {
     color: #3498db;
 }
 
+/* Logout is a form button (it must be a POST) styled to look like a link */
+.logout-form {
+    background: none;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.navbutton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* ---------- Alerts ---------- */
 .alert {
     border-radius: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-weight: 500;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.alert-error {
+    color: #a12622;
+    background-color: #fde2e1;
+}
+
+.alert-success {
+    color: #1e6b34;
+    background-color: #dff5e5;
 }
 
 .alert .close {
-    background: none;
-    border: none;
+    color: inherit;
     font-size: 20px;
     font-weight: bold;
-    color: inherit;
     opacity: 0.7;
-    transition: opacity 0.2s;
 }
 
 .alert .close:hover {
     opacity: 1;
 }
 
-h1 {
+/* ---------- Headings & notes ---------- */
+h1, .page-title {
     margin-bottom: 24px;
     color: #2c3e50;
     font-weight: 600;
+    text-align: center;
 }
 
 .list-group {
@@ -85,20 +135,46 @@ h1 {
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .list-group-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.note-body {
+    min-width: 0;
+    flex: 1;
+}
+
+.note-text {
+    display: block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.note-date {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #888;
+}
+
+.empty-state {
+    text-align: center;
+    color: #888;
+    margin-bottom: 30px;
 }
 
 .close {
     background: none;
     border: none;
     font-size: 22px;
+    line-height: 1;
     color: #e74c3c;
     cursor: pointer;
     opacity: 0.6;
@@ -110,6 +186,7 @@ h1 {
     transform: scale(1.15);
 }
 
+/* ---------- Forms ---------- */
 form {
     background: #ffffff;
     padding: 25px;
@@ -143,11 +220,20 @@ label {
 .form-control:focus, .form:focus {
     outline: none;
     border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
 textarea {
     resize: vertical;
     min-height: 100px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+    margin-bottom: 20px;
 }
 
 .btn {
@@ -170,4 +256,28 @@ textarea {
 
 .btn:active {
     transform: scale(0.98);
+}
+
+.form-footer {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid rgba(52, 152, 219, 0.5);
+    outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+    .container {
+        margin: 20px auto;
+        padding: 12px;
+    }
+
+    .navbar {
+        padding: 12px 16px;
+    }
 }

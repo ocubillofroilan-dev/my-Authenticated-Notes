@@ -1,56 +1,46 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <title>{% block title %}Home{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}" />
-    </head>
-        <body>
-            <nav class="navbar">
-                <a class="navbrand" href="/" style="color: white; text-decoration: none; font-weight: bold; padding: 10px;">My Notes</a>
-                <div class="navdiv">
-                    <div class="navtwo">
-                        {% if user.is_authenticated %}
-                        <a class="navitem" id="home" href="/">Home</a>
-                        <a class="navitem" id="logout" href="/logout">Logout</a>
-                        {% else %}
-                        <a class="navitem" id="login" href="/login">Login</a>
-                        <a class="navitem" id="signup" href="/signup">Sign Up</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </nav>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                {% if category == 'error' %}
-                <div class="alert" role="alert" style="color: red; background-color: #ffcccc; padding: 10px; margin-bottom: 15px;">
-                    {{ message }}
-                    <button type="button" class="close" onClick="this.parentElement.style.display='none';" style="cursor: pointer;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {% else %}
-                 <div class="alert" role="alert" style="color: green; background-color: #ffcccc; padding: 10px; margin-bottom: 15px;">
-                    {{ message }}
-                    <button type="button" class="close" onClick="this.parentElement.style.display='none';" style="cursor: pointer;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                {% endif %}
-                {% endfor %}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>{% block title %}Home{% endblock %} | My Notes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbrand" href="{{ url_for('views.home') }}">My Notes</a>
+        <div class="navdiv">
+            {% if current_user.is_authenticated %}
+            <a class="navitem" id="home" href="{{ url_for('views.home') }}">Home</a>
+            <form class="logout-form" method="POST" action="{{ url_for('auth.logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <button type="submit" class="navitem navbutton" id="logout">Logout</button>
+            </form>
+            {% else %}
+            <a class="navitem" id="login" href="{{ url_for('auth.login') }}">Login</a>
+            <a class="navitem" id="signup" href="{{ url_for('auth.signup') }}">Sign Up</a>
             {% endif %}
-            {% endwith %}
+        </div>
+    </nav>
 
-            <div class="container">
-            {% block content%}
-            {% endblock %}
-            </div>
-            <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container flash-area">
+        {% for category, message in messages %}
+        <div class="alert {{ 'alert-error' if category == 'error' else 'alert-success' }}" role="alert">
+            <span>{{ message }}</span>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Dismiss message">&times;</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
 
-        </body>
-    
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
 </html>
